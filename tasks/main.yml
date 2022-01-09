@@ -1,0 +1,25 @@
+- name: Find /var/log files equal or greater than 10 megabytes ending with .old or .log.gz via regex
+  find:
+    paths: /home/ec2-admin
+    file_type: directory
+    patterns: "^.*(scap-security-guide.*)$"
+    recurse: no
+    use_regex: yes
+  register: scaplocation
+
+- name: Inventory Scan
+  command: >
+    oscap xccdf eval --profile standard
+    --results-arf /tmp/arf.xml --report /tmp/cis-report.html {{ scaplocation.files[0].path }}/ssg-centos7-ds-1.2.xml
+  register: xccdf
+  failed_when: xccdf.rc == 1 or xccdf.rc > 2
+  become: yes
+
+- name: Open Vulnerabilities Scan
+  command: >
+    oscap oval eval --results /tmp/rhsa-results-oval.xml
+    --report /tmp/oval-report.html {{ scaplocation.files[0].path }}/ssg-centos7-ds-1.2.xml
+  async: 1500
+  poll: 10
+  ignore_errors: true
+  become: yes
