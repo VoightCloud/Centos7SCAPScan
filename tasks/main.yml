@@ -19,7 +19,7 @@
 
 - name: Open Vulnerabilities Scan
   command: >
-    oscap oval eval --results /tmp/rhsa-results-oval.xml --fetch-remote-resources
+    oscap oval eval --fetch-remote-resources
     --report /tmp/oval-report.html {{ scaplocation.files[0].path }}/ssg-centos7-ds.xml
   async: 1500
   poll: 10
