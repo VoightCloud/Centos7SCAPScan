@@ -2,14 +2,14 @@
   find:
     paths: /home/ec2-admin
     file_type: directory
-    patterns: "^.*(scap-security-guide.*)$"
+    patterns: "^(archive/build)$"
     recurse: no
     use_regex: yes
   register: scaplocation
 
 - name: Inventory Scan
   command: >
-    oscap xccdf eval --remediate --profile content_profile_pci-dss --fetch-remote-resources
+    oscap xccdf eval --remediate --profile content_profile_stig --fetch-remote-resources
     --report /tmp/cis-report.html {{ scaplocation.files[0].path }}/ssg-centos7-ds.xml
   register: xccdf
   async: 1500
