@@ -10,7 +10,7 @@
 - name: Inventory Scan
   command: >
     oscap xccdf eval --remediate --profile content_profile_stig --fetch-remote-resources
-    --report /tmp/cis-report.html {{ scaplocation.files[0].path }}/ssg-centos7-ds.xml
+    --report /tmp/cis-report.html /home/ec2-admin/archive/build/ssg-centos7-ds.xml
   register: xccdf
   async: 1500
   poll: 10
@@ -20,7 +20,7 @@
 - name: Open Vulnerabilities Scan
   command: >
     oscap oval eval --fetch-remote-resources
-    --report /tmp/oval-report.html {{ scaplocation.files[0].path }}/ssg-centos7-ds.xml
+    --report /tmp/oval-report.html /home/ec2-admin/archive/build/ssg-centos7-ds.xml
   async: 1500
   poll: 10
   ignore_errors: true
