@@ -1,23 +1,7 @@
-- name: Find /var/log files equal or greater than 10 megabytes ending with .old or .log.gz via regex
-  find:
-    paths: /home/ec2-admin
-    file_type: directory
-    patterns: "^(archive/build)$"
-    recurse: no
-    use_regex: yes
-  register: scaplocation
-
-- name: Fix CPE for Centos
-  replace:
-    path: /home/ec2-admin/archive/build/ssg-centos7-ds.xml
-    regexp: '<xccdf-1.2:platform idref.*'
-    replace: ''
-  become: true
-
 - name: Inventory Scan
   command: >
     oscap xccdf eval --profile content_profile_stig --fetch-remote-resources
-    --report /tmp/cis-report.html /home/ec2-admin/archive/build/ssg-centos7-ds.xml
+    --report /tmp/stig-report.html /home/ec2-admin/archive/build/ssg-centos7-ds.xml
   register: xccdf
   async: 1500
   poll: 10
