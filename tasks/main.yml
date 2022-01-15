@@ -7,6 +7,13 @@
     use_regex: yes
   register: scaplocation
 
+- name: Fix CPE for Centos
+  replace:
+    path: /home/ec2-admin/archive/build/ssg-centos7-ds.xml
+    regexp: '<xccdf-1.2:platform idref.*'
+    replace: ''
+  become: true
+
 - name: Inventory Scan
   command: >
     oscap xccdf eval --profile content_profile_stig --fetch-remote-resources
